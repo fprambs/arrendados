@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^Users/$',views.Users,name='Users'),
     url(r'^Users/([0-9]*)/$',views.User,name='User'),
+    url(r'^Properties/$',views.Properties,name='Properties'),
+    url(r'^Properties/([0-9]*)/$',views.Property,name='Property'),
 ]

@@ -37,6 +37,7 @@ class Propiedad(models.Model):
     cantidad = models.IntegerField()
     latitud = models.CharField(max_length=40)
     longitud = models.CharField(max_length=40)
+    id_usuario = models.IntegerField()
     ciudad = models.ForeignKey(Ciudad)
     tipo_propiedad = models.ForeignKey(Tipo_Propiedad)
 
@@ -45,14 +46,8 @@ class Foto(models.Model):
     ruta = models.CharField(max_length=200)
     propiedad= models.ForeignKey(Propiedad)
 
-#Arrendatario
-class Usuario_Ocupa_Propiedad(models.Model):
-     usuario = models.ForeignKey(Usuario)
-     propiedad = models.ForeignKey(Propiedad)
-     fecha_inicio = models.DateTimeField(primary_key=True)
-     fecha_termino = models.DateTimeField(null=True)
-#Arrendador   
-class Usuario_Arrienda_Propiedad(models.Model):
+ 
+class Usuario_Propiedad(models.Model):
      usuario = models.ForeignKey(Usuario)
      propiedad = models.ForeignKey(Propiedad)
      fecha_inicio = models.DateTimeField(primary_key=True)
