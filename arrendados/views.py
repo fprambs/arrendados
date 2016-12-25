@@ -8,7 +8,7 @@ from django.http import StreamingHttpResponse
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
-
+#---------------------------- CRUD USUARIOS ------------------------------------------
 @csrf_exempt
 def Users(request):
     if request.method == 'GET':
@@ -56,7 +56,6 @@ def User(request,id="0"):
             usuario = serializers.serialize("json",usuario)
             return HttpResponse(usuario, content_type='application/json')
         else:
-            print("Hola")
             error ={'Response':'El usuario no existe'}
             error_json = json.dumps(error)
             return HttpResponse(error_json, content_type='application/json', status=200)
@@ -78,4 +77,32 @@ def User(request,id="0"):
                 successful_json = json.dumps(response)
                 return HttpResponse(successful_json, content_type='application/json', status=500)
     
+    if request.method == 'PUT':
+        try:
+            usuario = Usuario.objects.get(id=id)
+            data = json.loads(request.body)
+            nombre = data['nombre']
+            fecha_nacimiento = data['fecha_nacimiento']
+            email = data['email']
+            password = data['password']
+            telefono = data['telefono']
+            direccion = data['direccion']
+            check_offer= data['check_offer']
+            tipo_usuario = data['tipo_usuario']
+
+            objeto_tipo_usuario = Tipo_Usuario.objects.get(id=tipo_usuario)
+
+            usuario = Usuario(id=id,nombre=nombre,fecha_nacimiento=fecha_nacimiento,email=email,password=password,telefono=telefono,direccion=direccion, check_offer=check_offer,tipo_usuario=objeto_tipo_usuario)
+            usuario.save() 
+
+            response ={'response': 'Se cambiaron correctamente los registros', 'code': '200', 'status': 'OK'}
+            successful_json = json.dumps(response)
+            return HttpResponse(successful_json, content_type='application/json', status=200)
+
+
+        except Exception as c:
+            print c
+            response ={'response': 'No se cambiaron los registros, ID no encontrada', 'code': '500', 'status': 'ERROR'}
+            successful_json = json.dumps(response)
+            return HttpResponse(successful_json, content_type='application/json', status=200)
 
